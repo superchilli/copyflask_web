@@ -1,3 +1,4 @@
-#Flask Web
+# Flask Web
 
-code from flask web development
+- code from [flask web development](https://github.com/miguelgrinberg/flasky)
+- just for practice
