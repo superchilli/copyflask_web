@@ -197,7 +197,7 @@ class AnonymousUser(AnonymousUserMixin):
     def is_administrator(self):
         return False
 
-login_manager.anonymous_user = AnonymoursUser
+login_manager.anonymous_user = AnonymousUser
 
 
 @login_manager.user_loader
@@ -229,7 +229,7 @@ class Post(db.Model):
             db.session.commit()
 
     @staticmethod
-    def on_change_body(target, value, oldvalue, initiator):
+    def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockuquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
                         'h1', 'h2', 'h3', 'p']

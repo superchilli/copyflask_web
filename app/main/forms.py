@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, BooleanField, SelectField, \
     SubmitField
 from wtforms.validators import Required, Length, Email, Regexp
-from wtfroms import ValidationError
+from wtforms import ValidationError
 from flask_pagedown.fields import PageDownField
 from ..models import Role, User
 
@@ -12,7 +12,7 @@ class NameForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
-class EditProFileForm(FlaskForm):
+class EditProfileForm(FlaskForm):
     name = StringField('Real name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0, 64)])
     about_me = TextAreaField('About me')

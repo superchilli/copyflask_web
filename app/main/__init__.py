@@ -1,4 +1,4 @@
-from flash import Blueprint
+from flask import Blueprint
 
 main = Blueprint('main', __name__)
 

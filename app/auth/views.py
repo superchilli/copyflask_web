@@ -13,7 +13,7 @@ from .forms import LoginForm, RegistrationForm, ChangePasswordForm, \
 def before_request():
     if current_user.is_authenticated:
         current_user.ping()
-        if not current_user.comfirmed \
+        if not current_user.confirmed \
                 and request.endpoint \
                 and request.endpoint[:5] != 'auth.' \
                 and request.endpoint != 'static':
@@ -49,7 +49,7 @@ def logout():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisrationForm()
+    form = RegistrationForm()
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
@@ -58,7 +58,7 @@ def register():
         db.session.commit()
         token = user.generate_confirmation_token()
         send_email(user.email, 'Confirm Your Account',
-                   'auth/email/confirm'. user=user, token=token)
+                   'auth/email/confirm', user=user, token=token)
         flash('A confirmation email has been sent to you by email.')
         return redirect(url_for('auth.lgoin'))
     return render_template('auth/register.html', form=form)
@@ -101,7 +101,7 @@ def change_password():
     return render_template('auth/change_password.html', form=form)
 
 
-@auth.route('/reset', method=['GET', 'POST'])
+@auth.route('/reset', methods=['GET', 'POST'])
 def password_reset_request():
     if not current_user.is_anonymous:
         return redirect(url_for('main.index'))
@@ -122,7 +122,7 @@ def password_reset_request():
 
 @auth.route('/reset/<token>', methods=['GET', 'POST'])
 def password_reset(token):
-    if not current_user.is_anonymour:
+    if not current_user.is_anonymous:
         return redirect(url_for('main.index'))
     form = PasswordResetForm()
     if form.validate_on_submit():

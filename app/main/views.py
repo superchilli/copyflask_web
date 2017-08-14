@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, abort, flash, request,\
     current_app
 from flask_login import login_required, current_user
 from . import main
-from .forms import EditProfileForm, EidtProfileAdminForm, PostForm
+from .forms import EditProfileForm, EditProfileAdminForm, PostForm
 from .. import db
 from ..models import Permission, Role, User, Post
 from ..decorators import admin_required
@@ -22,8 +22,9 @@ def index():
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-    return render_template('index.html', form=from, posts=posts,
+    return render_template('index.html', form=form, posts=posts,
                             pagination=pagination)
+
 
 
 @main.route('/user/<username>')
@@ -41,7 +42,7 @@ def user(username):
 @main.route('/eidt-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form = EidtProfileForm()
+    form = EditProfileForm()
     if form.validate_on_submit():
         current_user.name=form.name.data
         current_user.location=form.location.data
@@ -52,7 +53,7 @@ def edit_profile():
     form.name.data=current_user.name
     form.location.data=current_user.location
     form.about_me.data=current_user.about_me
-    return render_template('edit_profile.heml', form=form)
+    return render_template('edit_profile.html', form=form)
 
 
 @main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
