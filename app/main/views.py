@@ -5,7 +5,7 @@ from . import main
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm
 from .. import db
 from ..models import Permission, Role, User, Post
-from ..decorators import admin_required
+from ..decorators import admin_required, permission_required
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -129,7 +129,7 @@ def unfollow(username):
     if user is None:
         flash('Invalid user.')
         return redirect(url_for('.index'))
-    if not current_user.is_following(user)
+    if not current_user.is_following(user):
         flash('You are not following this user.')
         return redirect(url_for('.user', username=username))
     current_user.unfollow(user)

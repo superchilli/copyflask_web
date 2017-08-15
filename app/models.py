@@ -49,11 +49,15 @@ class Role(db.Model):
     def __repr__(self):
         return '<Role %r>' % self.name
 
-class Follow(db.model):
+
+class Follow(db.Model):
     __tablename__ ='follows'
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+                            primary_key=True)
+    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+                            primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -91,7 +95,7 @@ class User(UserMixin, db.Model):
         for i in range(count):
             u = User(email=forgery_py.internet.email_address(),
                      username=forgery_py.internet.user_name(True),
-                     password=forgery_py.lorem_ispum.word(),
+                     password=forgery_py.lorem_ipsum.word(),
                      confirmed=True,
                      name=forgery_py.name.full_name(),
                      location=forgery_py.address.city(),
@@ -202,7 +206,7 @@ class User(UserMixin, db.Model):
             url=url, hash=hash, size=size, default=default, rating=rating)
 
     def follow(self, user):
-        if is not self.is_following(user):
+        if not self.is_following(user):
             f = Follow(follower=self, followed=user)
             db.session.add(f)
 
@@ -212,10 +216,12 @@ class User(UserMixin, db.Model):
             db.session.delete(f)
 
     def is_following(self, user):
-        return self.followed.filter_by(followed_id=user.id).first() is not None
+        return self.followed.filter_by(
+            followed_id=user.id).first() is not None
 
     def is_followed_by(self, user):
-        return self.followers.filter_by(follower_id=user.id).first() is not None
+        return self.followers.filter_by(
+            follower_id=user.id).first() is not None
 
     def __repr__(self):
         return '<User %r>' % self.username
